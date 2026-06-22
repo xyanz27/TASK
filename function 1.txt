@@ -1,0 +1,7 @@
+let data = msg.payload.trim().split(",");
+
+return [
+    {payload: parseFloat(data[0])},
+    {payload: parseFloat(data[1])},
+    {payload: parseFloat(data[2])}
+];
