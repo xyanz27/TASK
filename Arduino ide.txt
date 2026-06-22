@@ -1,0 +1,63 @@
+#include <WiFi.h>
+
+int port = 5000; // port in tcp ip node red
+WiFiServer server(port);
+
+const char *ssid = "KASINO"; // your SSID Localhost name Wifi
+const char *password = "123456789"; // Password wifi
+
+const int voltagePin = 34; // conncenction pin voltage p34
+const int currentPin = 35; // conncenction pin voltage p34
+
+const float VREF = 3.3;
+const int ADC_RESOLUTION = 4095;
+
+void setup() {
+  Serial.begin(115200);
+
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+  }
+
+  Serial.println("WiFi Connected");
+  Serial.print("ESP32 IP : ");
+  Serial.println(WiFi.localIP());
+
+  server.begin();
+
+  Serial.print("TCP Server Port : ");
+  Serial.println(port);
+}
+
+void loop() {
+  WiFiClient client = server.available();
+
+  if (client) {
+    while (client.connected()) {
+      int voltageRaw = analogRead(voltagePin);
+      int currentRaw = analogRead(currentPin);
+
+      float voltageADC = (voltageRaw / (float)ADC_RESOLUTION) * VREF;
+      float voltage = voltageADC * 5.0;
+
+      float current = (currentRaw / (float)ADC_RESOLUTION) * VREF;
+
+      float watt = voltage * current;
+
+      String data =
+        String(voltage, 2) + "," +
+        String(current, 2) + "," +
+        String(watt, 2);
+
+      Serial.println(data);
+      client.println(data);
+
+      delay(1000);
+    }
+
+    client.stop();
+  }
+}
