@@ -1,0 +1,6 @@
+https://flows.nodered.org/flow/9ddf29277057e4666c1923061a507aaa
+
+( for add image using base64)
+1. copy json format, and paste into import node red
+2. Convert your picture on https://www.base64-image.de/ an paste it in qoutes after the 'logo.src ='.
+3. in base 64 image de, click code -> raw base64, and copy into logo.src after 'data:image/png;base64,
