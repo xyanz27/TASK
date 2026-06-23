@@ -1,0 +1,647 @@
+[
+    {
+        "id": "bd532f9defdf950f",
+        "type": "tab",
+        "label": "Flow 3",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "0646a951770c01aa",
+        "type": "ui_table",
+        "z": "bd532f9defdf950f",
+        "group": "c1fb1d1f5d02aa1f",
+        "name": "table",
+        "order": 8,
+        "width": 18,
+        "height": 1,
+        "columns": [
+            {
+                "field": "id",
+                "title": "id",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "timestamp",
+                "title": "timestamp",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "Curent  I",
+                "title": "arus",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "Volt  V",
+                "title": "tegangan",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "Power W",
+                "title": "daya",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 1230,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "33fe92ba3a3006e0",
+        "type": "tcp in",
+        "z": "bd532f9defdf950f",
+        "name": "EPS32 monitoring PV",
+        "server": "client",
+        "host": "10.231.207.207",
+        "port": "5000",
+        "datamode": "stream",
+        "datatype": "utf8",
+        "newline": "\\n",
+        "topic": "",
+        "trim": false,
+        "base64": false,
+        "tls": "",
+        "x": 120,
+        "y": 340,
+        "wires": [
+            [
+                "83aa3481ce61a889",
+                "78884118ff72a958"
+            ]
+        ]
+    },
+    {
+        "id": "13a51a50fcbe6bba",
+        "type": "debug",
+        "z": "bd532f9defdf950f",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 360,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "83aa3481ce61a889",
+        "type": "function",
+        "z": "bd532f9defdf950f",
+        "name": "function 1",
+        "func": "let data = msg.payload.trim().split(\",\");\n\nreturn [\n    {payload: parseFloat(data[0])},\n    {payload: parseFloat(data[1])},\n    {payload: parseFloat(data[2])}\n];",
+        "outputs": 3,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 360,
+        "wires": [
+            [
+                "7d0817e2c2ed8630",
+                "3883906f9a755625"
+            ],
+            [
+                "03ae07ada687403f",
+                "e2249de5f5683032"
+            ],
+            [
+                "69241f096d1ef6ec",
+                "3b162f1c452dd863",
+                "9ed5bbeacff730e8"
+            ]
+        ]
+    },
+    {
+        "id": "78884118ff72a958",
+        "type": "function",
+        "z": "bd532f9defdf950f",
+        "name": "function 2",
+        "func": "let data = msg.payload.trim().split(\",\");\n\nlet Current = parseFloat(data[0]);\nlet Voltage = parseFloat(data[1]);\nlet Watt = parseFloat(data[2]);\n\nmsg.topic = `\nINSERT INTO uprak\n(Current, Voltage, Watt)\nVALUES\n(${Current}, ${Voltage}, ${Watt})\n`;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 440,
+        "wires": [
+            [
+                "0a0ec1999ebbc521"
+            ]
+        ]
+    },
+    {
+        "id": "0a0ec1999ebbc521",
+        "type": "mysql",
+        "z": "bd532f9defdf950f",
+        "mydb": "2b0107c867330448",
+        "name": "datauprak",
+        "x": 560,
+        "y": 440,
+        "wires": [
+            [
+                "5f97825f4e380670",
+                "64d0cf148ec6612f"
+            ]
+        ]
+    },
+    {
+        "id": "5f97825f4e380670",
+        "type": "debug",
+        "z": "bd532f9defdf950f",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 740,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "9ed5bbeacff730e8",
+        "type": "switch",
+        "z": "bd532f9defdf950f",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gt",
+                "v": "50",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 770,
+        "y": 60,
+        "wires": [
+            [
+                "0723c425dbe7fe1d"
+            ]
+        ]
+    },
+    {
+        "id": "0723c425dbe7fe1d",
+        "type": "ui-notification",
+        "z": "bd532f9defdf950f",
+        "ui": "e7c723f24103b3e1",
+        "position": "bottom right",
+        "colorDefault": true,
+        "color": "#000000",
+        "displayTime": "5",
+        "showCountdown": true,
+        "outputs": 1,
+        "allowDismiss": true,
+        "dismissText": "Close",
+        "allowConfirm": false,
+        "confirmText": "Confirm",
+        "raw": false,
+        "className": "",
+        "name": "notif",
+        "x": 910,
+        "y": 60,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7d0817e2c2ed8630",
+        "type": "ui_gauge",
+        "z": "bd532f9defdf950f",
+        "name": "",
+        "group": "c1fb1d1f5d02aa1f",
+        "order": 2,
+        "width": 6,
+        "height": 4,
+        "gtype": "gage",
+        "title": "Volt",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 10,
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 770,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "3883906f9a755625",
+        "type": "ui_chart",
+        "z": "bd532f9defdf950f",
+        "name": "",
+        "group": "c1fb1d1f5d02aa1f",
+        "order": 5,
+        "width": 6,
+        "height": 5,
+        "label": "chart volt",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 780,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "03ae07ada687403f",
+        "type": "ui_gauge",
+        "z": "bd532f9defdf950f",
+        "name": "",
+        "group": "c1fb1d1f5d02aa1f",
+        "order": 3,
+        "width": 6,
+        "height": 4,
+        "gtype": "gage",
+        "title": "Current",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 10,
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 840,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "e2249de5f5683032",
+        "type": "ui_chart",
+        "z": "bd532f9defdf950f",
+        "name": "",
+        "group": "c1fb1d1f5d02aa1f",
+        "order": 6,
+        "width": 6,
+        "height": 5,
+        "label": "chart current",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 850,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "69241f096d1ef6ec",
+        "type": "ui_gauge",
+        "z": "bd532f9defdf950f",
+        "name": "",
+        "group": "c1fb1d1f5d02aa1f",
+        "order": 4,
+        "width": 6,
+        "height": 4,
+        "gtype": "gage",
+        "title": "Watt",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 10,
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 910,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "3b162f1c452dd863",
+        "type": "ui_chart",
+        "z": "bd532f9defdf950f",
+        "name": "",
+        "group": "c1fb1d1f5d02aa1f",
+        "order": 7,
+        "width": 6,
+        "height": 5,
+        "label": "chart watt",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 920,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "64d0cf148ec6612f",
+        "type": "function",
+        "z": "bd532f9defdf950f",
+        "name": "function 3 on tabel",
+        "func": "msg.topic = \"SELECT id, DATE_FORMAT(Timestamp, '%Y-%m-%d %H:%i:%s') AS timestamp, Current AS `Curent  I`, Voltage AS `Volt  V`, Watt AS `Power W` FROM uprak ORDER BY id DESC LIMIT 5;\";\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 480,
+        "wires": [
+            [
+                "07630885014cf99d"
+            ]
+        ]
+    },
+    {
+        "id": "38dded4fa8352800",
+        "type": "debug",
+        "z": "bd532f9defdf950f",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1180,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "07630885014cf99d",
+        "type": "mysql",
+        "z": "bd532f9defdf950f",
+        "mydb": "2b0107c867330448",
+        "name": "datauprak",
+        "x": 1040,
+        "y": 480,
+        "wires": [
+            [
+                "0646a951770c01aa",
+                "38dded4fa8352800"
+            ]
+        ]
+    },
+    {
+        "id": "f49887267097cf65",
+        "type": "ui_spacer",
+        "z": "bd532f9defdf950f",
+        "name": "spacer",
+        "group": "group1",
+        "order": 2,
+        "width": 8,
+        "height": 1
+    },
+    {
+        "id": "943a109f47498267",
+        "type": "ui_spacer",
+        "z": "bd532f9defdf950f",
+        "name": "spacer",
+        "group": "group1",
+        "order": 3,
+        "width": 3,
+        "height": 1
+    },
+    {
+        "id": "b7a1514f072ce9d1",
+        "type": "ui_spacer",
+        "z": "bd532f9defdf950f",
+        "name": "spacer",
+        "group": "group1",
+        "order": 5,
+        "width": 4,
+        "height": 1
+    },
+    {
+        "id": "4ace982e56c48e21",
+        "type": "ui_spacer",
+        "z": "bd532f9defdf950f",
+        "name": "spacer",
+        "group": "group1",
+        "order": 8,
+        "width": 3,
+        "height": 1
+    },
+    {
+        "id": "7c8d669345f76264",
+        "type": "ui_spacer",
+        "z": "bd532f9defdf950f",
+        "name": "spacer",
+        "group": "group1",
+        "order": 11,
+        "width": 3,
+        "height": 1
+    },
+    {
+        "id": "c1fb1d1f5d02aa1f",
+        "type": "ui_group",
+        "name": "tabel",
+        "tab": "fd4902aa2919dc21",
+        "order": 4,
+        "disp": true,
+        "width": 18,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "2b0107c867330448",
+        "type": "MySQLdatabase",
+        "name": "uprak",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "datauprak",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "e7c723f24103b3e1",
+        "type": "ui-base",
+        "name": "My Dashboard",
+        "path": "/dashboard",
+        "appIcon": "",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": false,
+        "headerContent": "page",
+        "navigationStyle": "default",
+        "titleBarStyle": "default",
+        "showReconnectNotification": true,
+        "notificationDisplayTime": 5,
+        "showDisconnectNotification": true,
+        "allowInstall": true
+    },
+    {
+        "id": "group1",
+        "type": "ui_group",
+        "name": "Indicator",
+        "tab": "ui_tab1",
+        "order": 1,
+        "disp": true,
+        "width": 12,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "fd4902aa2919dc21",
+        "type": "ui_tab",
+        "name": "latihan",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "ui_tab1",
+        "type": "ui_tab",
+        "name": "Agriculture",
+        "icon": "dashboard",
+        "disabled": true,
+        "hidden": true
+    },
+    {
+        "id": "19a1ad34d98359f8",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-node-ui-table": "0.4.5",
+            "node-red-node-mysql": "3.0.0",
+            "@flowfuse/node-red-dashboard": "1.30.0",
+            "node-red-dashboard": "3.6.6"
+        }
+    }
+]
