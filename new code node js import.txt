@@ -94,7 +94,8 @@
         "wires": [
             [
                 "83aa3481ce61a889",
-                "78884118ff72a958"
+                "78884118ff72a958",
+                "13a51a50fcbe6bba"
             ]
         ]
     },
@@ -634,7 +635,7 @@
         "hidden": true
     },
     {
-        "id": "19a1ad34d98359f8",
+        "id": "8d340a6614254cde",
         "type": "global-config",
         "env": [],
         "modules": {
