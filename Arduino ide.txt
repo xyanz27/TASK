@@ -1,4 +1,5 @@
 #include <WiFi.h>
+#include <SHI.h>
 
 int port = 5000; // port in tcp ip node red
 WiFiServer server(port);
