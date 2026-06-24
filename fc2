@@ -1,0 +1,14 @@
+let data = msg.payload.trim().split(",");
+
+let Current = parseFloat(data[0].trim()) || 0;
+let Voltage = parseFloat(data[1].trim()) || 0;
+let Watt = parseFloat(data[2].trim()) || 0;
+
+msg.topic = `
+INSERT INTO uprak
+(Current, Voltage, Watt)
+VALUES
+(${Current}, ${Voltage}, ${Watt})
+`;
+
+return msg;
