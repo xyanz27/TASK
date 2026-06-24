@@ -1,8 +1,0 @@
-let data = msg.payload.trim().split(",");
-
-// Mengirim ke 3 pin output yang berbeda
-return [
-    { payload: parseFloat(data[0].trim()) || 0 }, // Keluar di Pin 1 (Current)
-    { payload: parseFloat(data[1].trim()) || 0 }, // Keluar di Pin 2 (Voltage)
-    { payload: parseFloat(data[2].trim()) || 0 }  // Keluar di Pin 3 (Watt)
-];
