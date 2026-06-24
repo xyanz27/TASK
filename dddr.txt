@@ -1,0 +1,19 @@
+// Bersihkan string dan pecah berdasarkan koma
+let rawData = msg.payload.trim().split(",");
+
+// Ambil data, bersihkan spasi tiap elemen (.trim()), lalu ubah ke angka
+let Current = parseFloat(rawData[0].trim()) || 0;
+let Voltage = parseFloat(rawData[1].trim()) || 0;
+let Watt    = parseFloat(rawData[2].trim()) || 0;
+
+// Output 1: SQL Database
+let msgSQL = { 
+    topic: `INSERT INTO uprak (Current, Voltage, Watt) VALUES (${Current}, ${Voltage}, ${Watt})` 
+};
+
+// Output 2, 3, 4: Ke Gauge masing-masing
+let msgCurrent = { payload: Current };
+let msgVoltage = { payload: Voltage };
+let msgWatt    = { payload: Watt };
+
+return [msgSQL, msgCurrent, msgVoltage, msgWatt];
