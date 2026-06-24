@@ -70,8 +70,8 @@
         ],
         "outputs": 0,
         "cts": false,
-        "x": 1230,
-        "y": 480,
+        "x": 810,
+        "y": 460,
         "wires": []
     },
     {
@@ -177,7 +177,7 @@
         "wires": [
             [
                 "5f97825f4e380670",
-                "64d0cf148ec6612f"
+                "0646a951770c01aa"
             ]
         ]
     },
@@ -464,58 +464,6 @@
         ]
     },
     {
-        "id": "64d0cf148ec6612f",
-        "type": "function",
-        "z": "bd532f9defdf950f",
-        "name": "function 3 on tabel",
-        "func": "msg.topic = \"SELECT id, DATE_FORMAT(Timestamp, '%Y-%m-%d %H:%i:%s') AS timestamp, Current AS `Curent  I`, Voltage AS `Volt  V`, Watt AS `Power W` FROM uprak ORDER BY id DESC LIMIT 5;\";\n\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 790,
-        "y": 480,
-        "wires": [
-            [
-                "07630885014cf99d"
-            ]
-        ]
-    },
-    {
-        "id": "38dded4fa8352800",
-        "type": "debug",
-        "z": "bd532f9defdf950f",
-        "name": "debug 3",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1180,
-        "y": 560,
-        "wires": []
-    },
-    {
-        "id": "07630885014cf99d",
-        "type": "mysql",
-        "z": "bd532f9defdf950f",
-        "mydb": "2b0107c867330448",
-        "name": "datauprak",
-        "x": 1040,
-        "y": 480,
-        "wires": [
-            [
-                "0646a951770c01aa",
-                "38dded4fa8352800"
-            ]
-        ]
-    },
-    {
         "id": "88c8ed3cbc3f677e",
         "type": "inject",
         "z": "bd532f9defdf950f",
@@ -664,7 +612,7 @@
         "hidden": true
     },
     {
-        "id": "8b796568c36d8589",
+        "id": "155768af4377720f",
         "type": "global-config",
         "env": [],
         "modules": {
