@@ -516,6 +516,35 @@
         ]
     },
     {
+        "id": "88c8ed3cbc3f677e",
+        "type": "inject",
+        "z": "bd532f9defdf950f",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 320,
+        "y": 540,
+        "wires": [
+            [
+                "0a0ec1999ebbc521"
+            ]
+        ]
+    },
+    {
         "id": "f49887267097cf65",
         "type": "ui_spacer",
         "z": "bd532f9defdf950f",
@@ -635,7 +664,7 @@
         "hidden": true
     },
     {
-        "id": "8d340a6614254cde",
+        "id": "8b796568c36d8589",
         "type": "global-config",
         "env": [],
         "modules": {
